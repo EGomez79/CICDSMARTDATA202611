@@ -18,7 +18,7 @@ jobs:
         ORIGIN_HOST=${{ secrets.DATABRICKS_ORIGIN_HOST }}
         ORIGIN_TOKEN=${{ secrets.DATABRICKS_ORIGIN_TOKEN }}
         NOTEBOOK_BASE="/Workspace/Users/gomezelio@gmail.com/CICDSMARTDATA202611/proceso"
-        NOTEBOOKS=("1.Preparacion_Ambiente" "2.Ingest_circuits_data" "2.Ingest_Constructors" "2.Ingest_racing_data" "3.Transform" "4.Load" "5.Grants_Medallion")  # Agrega más según necesitesas
+        NOTEBOOKS=("1.-Prep_Ambiente" "2.-Ingest movie_cast" "2.-Ingest actors" "2.-Ingest movie data" "3.-Transform" "4.-Load")  # Agrega más según necesitesas  # Agrega más según necesitesas
         mkdir -p notebooks_to_deploy
         for nb in "${NOTEBOOKS[@]}"; do
           echo "Exportando $nb en modo raw..."
@@ -32,7 +32,7 @@ jobs:
       run: |
         DEST_HOST=${{ secrets.DATABRICKS_DEST_HOST }}
         DEST_TOKEN=${{ secrets.DATABRICKS_DEST_TOKEN }}
-        DEST_BASE="/proyecto/ventas/notebooks/"
+        DEST_BASE="/proyecto/movies/notebooks/"
         for file in notebooks_to_deploy/*.py; do
           name=$(basename "$file" .py)
           dest_path="$DEST_BASE/$name"
@@ -59,7 +59,7 @@ jobs:
       run: |
         DEST_HOST=${{ secrets.DATABRICKS_DEST_HOST }}
         DEST_TOKEN=${{ secrets.DATABRICKS_DEST_TOKEN }}
-        WORKFLOW_NAME="WF_ADB"
+        WORKFLOW_NAME="WF_ADB2"
         
         echo "Verificando si existe el workflow: $WORKFLOW_NAME"
         
@@ -130,7 +130,7 @@ jobs:
               "task_key": "preparacion_ambiente",
               "description": "Ejecuta notebook 1.Preparacion_Ambiente con parámetros",
               "notebook_task": {
-                "notebook_path": "/proyecto/ventas/notebooks/1.Preparacion_Ambiente",
+                "notebook_path": "/proyecto/movies/notebooks/1.-Prep_Ambiente",
                 "source": "WORKSPACE",
                 "base_parameters": {
                   "storageName": "adlsmartdata202611",
@@ -145,7 +145,7 @@ jobs:
               "task_key": "ingest_circuits_data",
               "description": "Ejecuta notebook ingest_circuits_data con parámetros",
               "notebook_task": {
-                "notebook_path": "/proyecto/ventas/notebooks/2.Ingest_circuits_data",
+                "notebook_path": "/proyecto/movies/notebooks/2.-Ingest movie_cast",
                 "source": "WORKSPACE",
                 "base_parameters": {
                   "container": "raw",
@@ -167,7 +167,7 @@ jobs:
               "task_key": "ingest_constructors",
               "description": "Ejecuta notebook ingest_constructors con parámetros",
               "notebook_task": {
-                "notebook_path": "/proyecto/ventas/notebooks/2.Ingest_Constructors",
+                "notebook_path": "/proyecto/movies/notebooks/2.-Ingest actors",
                 "source": "WORKSPACE",
                 "base_parameters": {
                   "container": "raw",
@@ -189,7 +189,7 @@ jobs:
               "task_key": "ingest_racing",
               "description": "Ejecuta notebook ingest_racing con parámetros",
               "notebook_task": {
-                "notebook_path": "/proyecto/ventas/notebooks/2.Ingest_racing_data",
+                "notebook_path": "/proyecto/movies/notebooks/2.-Ingest movie data",
                 "source": "WORKSPACE",
                 "base_parameters": {
                   "container": "raw",
@@ -211,7 +211,7 @@ jobs:
               "task_key": "transform",
               "description": "Ejecuta notebook transform con parámetros",
               "notebook_task": {
-                "notebook_path": "/proyecto/ventas/notebooks/3.Transform",
+                "notebook_path": "/proyecto/movies/notebooks/3.-Transform",
                 "source": "WORKSPACE",
                 "base_parameters": {
                   "catalogo": "catalog_prod",
@@ -238,7 +238,7 @@ jobs:
               "task_key": "Load",
               "description": "Ejecuta notebook Load con parámetros",
               "notebook_task": {
-                "notebook_path": "/proyecto/ventas/notebooks/4.Load",
+                "notebook_path": "/proyecto/movies/notebooks/4.-Load",
                 "source": "WORKSPACE",
                 "base_parameters": {
                   "catalogo": "catalog_prod",
@@ -254,25 +254,8 @@ jobs:
                   "task_key": "transform"
                 }
               ]
-            },
-            {
-              "task_key": "grants",
-              "description": "Ejecuta notebook Grants con parámetros",
-              "notebook_task": {
-                "notebook_path": "/proyecto/ventas/notebooks/5.Grants_Medallion",
-                "source": "WORKSPACE",
-                "base_parameters": {
-                  "catalogo": "catalog_prod"
-                }
-              },
-              "existing_cluster_id": "$CLUSTER_ID",
-              "timeout_seconds": 3600,
-              "max_retries": 2,
-              "depends_on": [
-                {
-                  "task_key": "Load"
-                }
-              ]
+            }
+
             }
           ],
           "schedule": {
