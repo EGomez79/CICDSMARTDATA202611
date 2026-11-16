@@ -59,7 +59,7 @@ jobs:
       run: |
         DEST_HOST=${{ secrets.DATABRICKS_DEST_HOST }}
         DEST_TOKEN=${{ secrets.DATABRICKS_DEST_TOKEN }}
-        WORKFLOW_NAME="WF_ADB"
+        WORKFLOW_NAME="WF_ADB2"
         
         echo "Verificando si existe el workflow: $WORKFLOW_NAME"
         
@@ -145,7 +145,7 @@ jobs:
               "task_key": "ingest_circuits_data",
               "description": "Ejecuta notebook ingest_circuits_data con parámetros",
               "notebook_task": {
-                "notebook_path": "/proyecto/movies/notebooks/2.-Ingest  movie_cast",
+                "notebook_path": "/proyecto/movies/notebooks/2.-Ingest movie_cast",
                 "source": "WORKSPACE",
                 "base_parameters": {
                   "container": "raw",
