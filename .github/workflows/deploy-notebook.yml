@@ -224,13 +224,13 @@ jobs:
               "max_retries": 2,
               "depends_on": [
                 {
-                  "task_key": "ingest_circuits_data"
+                  "task_key": "ingest_movie_data"
                 },
                 {
-                  "task_key": "ingest_constructors"
+                  "task_key": "ingest_actor"
                 },
                 {
-                  "task_key": "ingest_racing"
+                  "task_key": "ingest_movie_cast"
                 }
               ]
             },
